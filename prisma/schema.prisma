@@ -10,15 +10,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Sex {
+  MALE
+  FEMALE
+}
+
+enum Size {
+  TINY
+  SMALL
+  MEDIUM
+  LARGE
+  GIANT
+}
+
+enum PetType {
+  DOG
+  CAT
+}
+
 model Pet {
   id            String  @id @default(uuid())
   name          String
-  pet_type      String
-  sex           String
+  pet_type      PetType
+  sex           Sex?
   description   String?
   breed         String?
   age           Int?
-  size          String?
+  size          Size?
   may_live_with String?
   ideal_home    String?
 
