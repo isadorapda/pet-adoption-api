@@ -42,4 +42,23 @@ describe('Register a pet service', () => {
 
 		expect(pet.id).toEqual(expect.any(String))
 	})
+
+	test('Should not be able to register a pet without organisation id', async () => {
+		await expect(()=>
+			sut.registerPetService({
+				name: 'Fiona',
+				pet_type: 'DOG',
+				age: 3,
+				size: 'SMALL',
+				breed:'Husky',
+				description: '',
+				ideal_home:'Outside space',
+				may_live_with:'',
+				sex:'FEMALE',
+				organisationId: 'non-exististing-org',
+			})
+		).rejects.toBeInstanceOf(Error)
+
+
+	})
 })
