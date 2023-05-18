@@ -24,5 +24,5 @@ Find a pet
 
 - [x] Organisation's password must be encrypted
 - [x] Data must be persisted in a PostgreSQL database
-- [ ] All datasets must be paginated with 20 items per page
-- [ ] Organisation must be identified by a jwt
+- [x] All datasets must be paginated with 20 items per page
+- [x] Organisation must be identified by a jwt
