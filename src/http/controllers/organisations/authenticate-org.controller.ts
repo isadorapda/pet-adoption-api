@@ -15,13 +15,36 @@ export async function authenticateOrganisationController(request:FastifyRequest,
 		const organisationRepository = new PrismaOrganisationsRepository()
 		const authService = new AuthenticateOrganisationService(organisationRepository)
 
-		await authService.authenticateOrgService({
+		const {organisation}=await authService.authenticateOrgService({
 			email,
 			password,
 		})
+		const token = await reply.jwtSign(
+			{},
+			{
+				sign:{
+					sub: organisation.id,
+				}
+			}
+		)
+
+		const refreshToken = await reply.jwtSign(
+			{},
+			{
+				sign:{
+					sub:organisation.id,
+					expiresIn: '7d',
+				}
+			}
+		)
+		return reply.setCookie('refreshToken', refreshToken,{
+			path: '/',
+			httpOnly: true,
+			secure: true,
+			sameSite:true
+		}).status(200).send({token})
 	} catch (error) {
 		throw new Error()
 	}
 
-	return reply.status(200).send()
 }
