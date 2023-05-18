@@ -1,8 +1,24 @@
 import { Pet, Prisma } from '@prisma/client'
 import { PetsRepository } from '../pets-repository'
 import { prisma } from '@/lib/prisma'
+import { Filters } from '@/http/controllers/pets/search-pet.controller'
 
 export class PrismaPetsRepository implements PetsRepository{
+	
+	async searchPets({location, page,limit,...petFilters}: Filters): Promise<Pet[]> {
+
+		return await prisma.pet.findMany({
+			where:{
+				organisation:{
+					city:location
+				},
+				...petFilters
+
+			},
+			take:limit,
+			skip:(page-1)*limit
+		})
+	}
 	async findById(petId: string) {
 		const pet = await prisma.pet.findUnique({
 			where:{
@@ -18,9 +34,6 @@ export class PrismaPetsRepository implements PetsRepository{
 		return pet
 	}
 
-	async findAllByLocation(location: string): Promise<Pet[]> {
-		const pets =  await prisma.pet.findMany({where: {organisation: { city: location}}})
-		return pets
-	}
+
 
 }
