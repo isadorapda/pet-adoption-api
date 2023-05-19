@@ -2,6 +2,7 @@ import {beforeEach, describe, expect, test} from 'vitest'
 import { AuthenticateOrganisationService } from './authenticate-org.service'
 import { InMemoryOrganisationsRepository } from '@/repositories/in-memory/in-memory-org-repository'
 import { hash } from 'bcryptjs'
+import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
 
 let organisationRepository:InMemoryOrganisationsRepository
@@ -37,7 +38,7 @@ describe('Authenticate Organisation Service', () => {
 		await expect(()=>sut.authenticateOrgService({
 			email: 'pet.org@email.com',
 			password:'123456'
-		})).rejects.toBeInstanceOf(Error)
+		})).rejects.toBeInstanceOf(InvalidCredentialsError)
 	})
 
 	test('Should not be able to authenticate an organisation login with wrong password', async () => {
@@ -54,6 +55,6 @@ describe('Authenticate Organisation Service', () => {
 		await expect(()=>sut.authenticateOrgService({
 			email: 'pet.org@email.com',
 			password:'123457'
-		})).rejects.toBeInstanceOf(Error)
+		})).rejects.toBeInstanceOf(InvalidCredentialsError)
 	})
 })

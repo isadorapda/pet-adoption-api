@@ -2,6 +2,7 @@ import { InMomoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-
 import {beforeEach, describe, expect, test} from 'vitest'
 import { GetPetDetailsService } from './get-pet-details.service'
 import { InMemoryOrganisationsRepository } from '@/repositories/in-memory/in-memory-org-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 let petsRepository: InMomoryPetsRepository
 let organisationsRepository: InMemoryOrganisationsRepository
@@ -34,6 +35,6 @@ describe('Get Pet Details Service', () => {
 		await expect(()=>
 			sut.petDetailsService({
 				petId: 'non-existing-id'
-			})).rejects.toBeInstanceOf(Error)
+			})).rejects.toBeInstanceOf(ResourceNotFoundError)
 	})
 })
