@@ -1,4 +1,5 @@
 import { PrismaOrganisationsRepository } from '@/repositories/prisma/prisma-organisation-repository'
+import { EmailAlreadyRegisteredError } from '@/services/errors/email-already-registered-error'
 import { RegisterOrganisationService } from '@/services/register-org.service'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import {z} from 'zod'
@@ -29,7 +30,12 @@ export async function registerOrganisationController(request:FastifyRequest, rep
 			city
 		})
 	} catch (error) {
-		throw new Error()
+		if(error instanceof EmailAlreadyRegisteredError){
+			return reply.status(409).send({
+				message: error.message,	
+			})
+		}
+		throw error
 	}
 	return reply.status(201).send()
 }

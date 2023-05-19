@@ -1,6 +1,7 @@
 import { OrganisationRepository } from '@/repositories/organisation-repository'
 import { Organisation } from '@prisma/client'
 import { hash } from 'bcryptjs'
+import { EmailAlreadyRegisteredError } from './errors/email-already-registered-error'
 
 interface RegisterOrganisationServiceRequest{
     name: string;
@@ -24,7 +25,7 @@ export class RegisterOrganisationService{
 		const emailAlreadyRegistered = await this.organisationRepository.findByEmail(email)
 
 		if(emailAlreadyRegistered){
-			throw new Error('Email already registered')
+			throw new EmailAlreadyRegisteredError()
 		}
 
 		const organisation = await this.organisationRepository.create({

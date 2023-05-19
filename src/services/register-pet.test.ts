@@ -3,6 +3,7 @@ import {beforeEach, describe, expect, test} from 'vitest'
 import { RegisterPetService } from './register-pet.service'
 import { InMemoryOrganisationsRepository } from '@/repositories/in-memory/in-memory-org-repository'
 import { hash } from 'bcryptjs'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 let petsRepository: InMomoryPetsRepository
 let organisationsRepository: InMemoryOrganisationsRepository
@@ -57,7 +58,7 @@ describe('Register a pet service', () => {
 				sex:'FEMALE',
 				organisationId: 'non-exististing-org',
 			})
-		).rejects.toBeInstanceOf(Error)
+		).rejects.toBeInstanceOf(ResourceNotFoundError)
 
 
 	})

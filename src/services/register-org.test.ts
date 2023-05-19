@@ -2,6 +2,7 @@ import { InMemoryOrganisationsRepository } from '@/repositories/in-memory/in-mem
 import {beforeEach, describe, expect, test} from 'vitest'
 import { RegisterOrganisationService } from './register-org.service'
 import { compare } from 'bcryptjs'
+import { EmailAlreadyRegisteredError } from './errors/email-already-registered-error'
 
 let organisationsRepository: InMemoryOrganisationsRepository
 let sut: RegisterOrganisationService
@@ -66,6 +67,6 @@ describe('Register Organisation Service', () => {
 				mobile:'07123456789',
 				address: '',
 				password: '123456',
-			})).rejects.toBeInstanceOf(Error)
+			})).rejects.toBeInstanceOf(EmailAlreadyRegisteredError)
 	})
 })
