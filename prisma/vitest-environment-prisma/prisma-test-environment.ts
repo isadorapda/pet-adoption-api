@@ -24,7 +24,7 @@ export default <Environment>{
 
 		process.env.DATABASE_URL = databaseURL
 
-		execSync('npm prisma migrate deploy')
+		execSync('npx prisma migrate deploy')
 		return {
 			async teardown() {
 				await prisma.$queryRawUnsafe(`DROP SCHEMA IF EXISTS "${schema}" CASCADE`)
