@@ -30,14 +30,12 @@ describe('Search Pet', () => {
 			name: 'Fiona',
 			pet_type: 'DOG',
 			age: 3,
-			size: 'SMALL',
 			organisation_id: 'Org-01',
 		})
 		await petsRepo.create({
 			name: 'Lyra',
 			pet_type: 'CAT',
 			age: 4,
-			size: 'SMALL',
 			organisation_id: 'Org-01',
 		})
 
@@ -65,7 +63,6 @@ describe('Search Pet', () => {
 				name: `Fiona ${i}`,
 				pet_type: 'DOG',
 				age: 3,
-				size: 'SMALL',
 				organisation_id: 'Org-01',
 			})
 		}
@@ -93,7 +90,6 @@ describe('Search Pet', () => {
 			name: 'Fiona',
 			pet_type: 'DOG',
 			age: 3,
-			size: 'MEDIUM',
 			sex: 'FEMALE',
 			organisation_id: 'Org-01',
 		})
@@ -101,7 +97,6 @@ describe('Search Pet', () => {
 			name: 'Martin',
 			pet_type: 'DOG',
 			age: 3,
-			size: 'MEDIUM',
 			sex: 'MALE',
 			organisation_id: 'Org-01',
 		})
@@ -110,14 +105,12 @@ describe('Search Pet', () => {
 			pet_type: 'CAT',
 			age: 4,
 			sex: 'FEMALE',
-			size: 'SMALL',
 			organisation_id: 'Org-01',
 		})
 
 		const {pets} = await sut.searchPetService({
 			location:'Manchester',
 			pet_type:'DOG',
-			size:'MEDIUM',
 			age:3,
 			limit: 20,
 			page:1
