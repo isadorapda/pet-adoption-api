@@ -3,7 +3,6 @@ import {beforeEach, describe, expect, test} from 'vitest'
 import { SearchPetService } from './search-pet.service'
 import { InMemoryOrganisationsRepository } from '@/repositories/in-memory/in-memory-org-repository'
 import { hash } from 'bcryptjs'
-import { PetSize } from '@/http/controllers/pets/search-pet.controller'
 
 let petsRepo: InMomoryPetsRepository
 let orgsRepo: InMemoryOrganisationsRepository
@@ -31,14 +30,12 @@ describe('Search Pet', () => {
 			name: 'Fiona',
 			pet_type: 'DOG',
 			age: 3,
-			size:  PetSize.SMALL,
 			organisation_id: 'Org-01',
 		})
 		await petsRepo.create({
 			name: 'Lyra',
 			pet_type: 'CAT',
 			age: 4,
-			size:  PetSize.SMALL,
 			organisation_id: 'Org-01',
 		})
 
@@ -66,7 +63,6 @@ describe('Search Pet', () => {
 				name: `Fiona ${i}`,
 				pet_type: 'DOG',
 				age: 3,
-				size: PetSize.SMALL,
 				organisation_id: 'Org-01',
 			})
 		}
@@ -94,7 +90,6 @@ describe('Search Pet', () => {
 			name: 'Fiona',
 			pet_type: 'DOG',
 			age: 3,
-			size: PetSize.MEDIUM,
 			sex: 'FEMALE',
 			organisation_id: 'Org-01',
 		})
@@ -102,7 +97,6 @@ describe('Search Pet', () => {
 			name: 'Martin',
 			pet_type: 'DOG',
 			age: 3,
-			size: PetSize.MEDIUM,
 			sex: 'MALE',
 			organisation_id: 'Org-01',
 		})
@@ -111,14 +105,12 @@ describe('Search Pet', () => {
 			pet_type: 'CAT',
 			age: 4,
 			sex: 'FEMALE',
-			size: PetSize.MEDIUM,
 			organisation_id: 'Org-01',
 		})
 
 		const {pets} = await sut.searchPetService({
 			location:'Manchester',
 			pet_type:'DOG',
-			size: PetSize.MEDIUM,
 			age:3,
 			limit: 20,
 			page:1
