@@ -1,19 +1,19 @@
 import { OrganisationRepository } from '@/repositories/organisation-repository'
 import { PetsRepository } from '@/repositories/pets-repository'
-import { Pet, PetType, Sex, Size } from '@prisma/client'
+import { Pet, PetType,  Sex, Size } from '@prisma/client'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface RegisterPetServiceRequest{
     organisationId:string
     name:string
-    sex:Sex | null
+    sex?:Sex
     pet_type: PetType 
-    size: Size | null
-    description: string | null
-    may_live_with: string | null
-    ideal_home: string | null
-    breed: string | null
-    age: number
+    size?: Size 
+    description?: string 
+    may_live_with?: string 
+    ideal_home?: string 
+    breed?: string 
+    age?: number
 }
 interface RegisterPetServiceResponse{
     pet: Pet
@@ -40,6 +40,7 @@ export class RegisterPetService{
 			ideal_home,
 			may_live_with,
 			organisation_id:organisationId,
+
 		})
 
 		return {pet}

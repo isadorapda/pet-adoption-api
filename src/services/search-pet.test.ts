@@ -3,6 +3,7 @@ import {beforeEach, describe, expect, test} from 'vitest'
 import { SearchPetService } from './search-pet.service'
 import { InMemoryOrganisationsRepository } from '@/repositories/in-memory/in-memory-org-repository'
 import { hash } from 'bcryptjs'
+import { PetSize } from '@/http/controllers/pets/search-pet.controller'
 
 let petsRepo: InMomoryPetsRepository
 let orgsRepo: InMemoryOrganisationsRepository
@@ -117,7 +118,7 @@ describe('Search Pet', () => {
 		const {pets} = await sut.searchPetService({
 			location:'Manchester',
 			pet_type:'DOG',
-			size:'MEDIUM',
+			size: PetSize.MEDIUM,
 			age:3,
 			limit: 20,
 			page:1

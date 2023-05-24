@@ -4,8 +4,12 @@ import { searchPetController } from './search-pet.controller'
 import { getPetDetailsController } from './get-pet-details.controller'
 import { verifyJWT } from '@/http/middlewares/verify-jwt'
 
-export async function petsRoutes(app:FastifyInstance){
-	app.post('/organisations/:organisationId/pets',{onRequest:[verifyJWT]} ,registerPetController)
+export async function petsRoutes(app: FastifyInstance) {
 	app.get('/pets/search', searchPetController)
 	app.get('/pets/:petId/details', getPetDetailsController)
+	app.post(
+		'/organisations/:organisationId/pets',
+		{ onRequest: [verifyJWT] },
+		registerPetController
+	)
 }

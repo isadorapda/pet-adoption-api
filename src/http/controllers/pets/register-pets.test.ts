@@ -3,6 +3,7 @@ import request from 'supertest'
 import { app } from '@/app'
 import { createAndAuthenticateOrganisation } from '@/utils/create-and-authenticate-org'
 import { prisma } from '@/lib/prisma'
+import { PetSize } from './search-pet.controller'
 
 describe('Pet Controllers E2E', () => {
 	beforeAll(async() => {
@@ -20,7 +21,7 @@ describe('Pet Controllers E2E', () => {
 			name: 'Fiona',
 			pet_type: 'DOG',
 			age: 3,
-			size: 'SMALL',
+			size: PetSize.SMALL,
 			breed:'Husky',
 			description: '',
 			ideal_home:'Outside space',
@@ -28,7 +29,7 @@ describe('Pet Controllers E2E', () => {
 			sex:'FEMALE',
 		})
 
-		expect(response.statusCode).toBe(201)
+		expect(response.statusCode).toEqual(201)
 
 	})
 
