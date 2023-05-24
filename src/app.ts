@@ -4,18 +4,21 @@ import { organisationRoutes } from './http/controllers/organisations/routes'
 import { petsRoutes } from './http/controllers/pets/routes'
 import fastifyJwt from '@fastify/jwt'
 import { env } from './env'
-
+import cors from '@fastify/cors'
 
 export const app = fastify()
-app.register(fastifyJwt,{
+app.register(cors,{
+	allowedHeaders:['Access-Control-Allow-Headers', 'Content-Type,Authorization','Origin, X-Requested-With, Content-Type, Accept']
+})
+app.register(fastifyJwt, {
 	secret: env.JWT_SECRET,
-	cookie:{
+	cookie: {
 		cookieName: 'refreshToken',
-		signed:false
+		signed: false,
 	},
-	sign:{
+	sign: {
 		expiresIn: '10m',
-	}
+	},
 })
 app.register(fastifyCookie)
 

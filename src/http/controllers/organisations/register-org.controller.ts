@@ -2,9 +2,12 @@ import { PrismaOrganisationsRepository } from '@/repositories/prisma/prisma-orga
 import { EmailAlreadyRegisteredError } from '@/services/errors/email-already-registered-error'
 import { RegisterOrganisationService } from '@/services/register-org.service'
 import { FastifyReply, FastifyRequest } from 'fastify'
-import {z} from 'zod'
+import { z } from 'zod'
 
-export async function registerOrganisationController(request:FastifyRequest, reply: FastifyReply){
+export async function registerOrganisationController(
+	request: FastifyRequest,
+	reply: FastifyReply
+) {
 	const registerOrgBodySchema = z.object({
 		name: z.string(),
 		email: z.string().email(),
@@ -15,27 +18,28 @@ export async function registerOrganisationController(request:FastifyRequest, rep
 		mobile: z.string().min(9),
 	})
 
-	const {name,email,password,address,postcode,mobile,city} = registerOrgBodySchema.parse(request.body)
+	const { name, email, password, address, postcode, mobile, city } =
+    registerOrgBodySchema.parse(request.body)
 
 	try {
 		const orgRepository = new PrismaOrganisationsRepository()
 		const orgService = new RegisterOrganisationService(orgRepository)
-		await orgService.registerOrgService({
+		const { organisation } = await orgService.registerOrgService({
 			name,
 			email,
 			password,
 			address,
 			postcode,
 			mobile,
-			city
+			city,
 		})
+		return reply.status(201).send({ ...organisation, password_hash:undefined })
 	} catch (error) {
-		if(error instanceof EmailAlreadyRegisteredError){
+		if (error instanceof EmailAlreadyRegisteredError) {
 			return reply.status(409).send({
-				message: error.message,	
+				message: error.message,
 			})
 		}
 		throw error
-	}
-	return reply.status(201).send()
+	}	
 }

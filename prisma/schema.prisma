@@ -35,7 +35,7 @@ model Pet {
   sex           Sex?
   description   String?
   breed         String?
-  age           Int?
+  age           Float?
   size          Size?
   may_live_with String?
   ideal_home    String?
