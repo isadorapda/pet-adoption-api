@@ -4,6 +4,21 @@ import { RegisterPetService } from '@/services/register-pet.service'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
+export enum MayLiveWith {
+  CATS = 'CATS',
+  DOGS = 'DOGS',
+  CHILDREN = 'CHILDREN',
+  ELDER = 'ELDER',
+  ANY = 'ANY',
+}
+export enum PetSize {
+  TINY = 'TINY',
+  SMALL = 'SMALL',
+  MEDIUM = 'MEDIUM',
+  LARGE = 'LARGE',
+  GIANT = 'GIANT',
+}
+
 export async function registerPetController(
 	request: FastifyRequest,
 	reply: FastifyReply
@@ -15,12 +30,12 @@ export async function registerPetController(
 	const registerPetBodySchema = z.object({
 		name: z.string(),
 		pet_type: z.enum(['DOG', 'CAT']),
-		age: z.coerce.number().positive().optional(),
-		sex: z.enum(['MALE', 'FEMALE']).optional(),
-		size: z.enum(['TINY', 'SMALL', 'MEDIUM', 'LARGE', 'GIANT']).optional(),
+		age: z.coerce.number().positive(),
+		sex: z.enum(['MALE', 'FEMALE']),
+		size: z.nativeEnum(PetSize),
 		description: z.string().optional(),
 		breed: z.string().optional(),
-		may_live_with: z.string().optional(),
+		may_live_with: z.nativeEnum(MayLiveWith),
 		ideal_home: z.string().optional(),
 	})
 

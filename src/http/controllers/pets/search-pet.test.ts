@@ -3,8 +3,8 @@ import request from 'supertest'
 import { app } from '@/app'
 import { createAndAuthenticateOrganisation } from '@/utils/create-and-authenticate-org'
 import { prisma } from '@/lib/prisma'
-import { PetSize } from './search-pet.controller'
 import { hash } from 'bcryptjs'
+import { MayLiveWith, PetSize } from './register-pet.controller'
 
 describe('Search pet controller', () => {
 	beforeAll(async() => {
@@ -26,8 +26,8 @@ describe('Search pet controller', () => {
 			breed:'Husky',
 			description: '',
 			ideal_home:'Outside space',
-			may_live_with:'',
 			sex:'FEMALE',
+			may_live_with:MayLiveWith.ANY
 		})
 
 		const response = await request(app.server).get('/pets/search').query({location:'London'}).send()
@@ -42,8 +42,6 @@ describe('Search pet controller', () => {
 	})
 
 	test('Should be able to filter pets on search', async ()=>{ 
-		// await createAndAuthenticateOrganisation(app)
-
 		const org = await prisma.organisation.create({
 			data:{
 				name: 'Pet 1',
@@ -66,9 +64,9 @@ describe('Search pet controller', () => {
 					breed:'Husky',
 					description: '',
 					ideal_home:'Outside space',
-					may_live_with:'',
 					sex:'FEMALE',
 					organisation_id:org.id,
+					may_live_with:MayLiveWith.ANY,
 				},
 				{
 					name: 'Bob',
@@ -78,8 +76,8 @@ describe('Search pet controller', () => {
 					breed:'Husky',
 					description: '',
 					ideal_home:'Outside space',
-					may_live_with:'',
 					sex:'MALE',
+					may_live_with:MayLiveWith.ANY,
 					organisation_id:org.id,
 				},
 				{
@@ -90,8 +88,8 @@ describe('Search pet controller', () => {
 					breed:'Collie',
 					description: '',
 					ideal_home:'Outside space',
-					may_live_with:'',
 					sex:'FEMALE',
+					may_live_with:MayLiveWith.ANY,
 					organisation_id:org.id,
 				},
 			]
@@ -99,27 +97,12 @@ describe('Search pet controller', () => {
 		})
 
 		const response = await request(app.server).get('/pets/search').query({location:'London',sex:'MALE',pet_type:'DOG'}).send()
-		console.log(response.body.pets)
 		expect(response.statusCode).toEqual(200)
 		expect(response.body.pets).toHaveLength(1)
 		expect(response.body.pets).toEqual([
 			expect.objectContaining({
 				name: 'Bob',
-			}),
-			
-		])
-        
-		// const response2 = await request(app.server).get('/pets/search').query({location:'London',sex:'FEMALE',size:'MEDIUM',pet_type:'DOG',breed:'Collie',age:3}).send()
-		// expect(response2.statusCode).toEqual(200)
-		// expect(response2.body.pets).toHaveLength(1)
-		// expect(response2.body.pets).toEqual([
-         
-		// 	expect.objectContaining({
-		// 		name: 'Lila',
-		// 	}),
-		// ])
+			}),	
+		])  
 	})
-
-
-
 })

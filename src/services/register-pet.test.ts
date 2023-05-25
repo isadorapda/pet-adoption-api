@@ -36,7 +36,7 @@ describe('Register a pet service', () => {
 			breed:'Husky',
 			description: '',
 			ideal_home:'Outside space',
-			may_live_with:'',
+			may_live_with:'ANY',
 			sex:'FEMALE',
 			organisationId: org.id,
 		})
@@ -54,7 +54,7 @@ describe('Register a pet service', () => {
 				breed:'Husky',
 				description: '',
 				ideal_home:'Outside space',
-				may_live_with:'',
+				may_live_with:'ANY',
 				sex:'FEMALE',
 				organisationId: 'non-exististing-org',
 			})

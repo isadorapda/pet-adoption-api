@@ -21,6 +21,8 @@ describe('Get Pet Details Service', () => {
 			pet_type: 'DOG',
 			age: 3,
 			size: 'SMALL',
+			may_live_with:'ANY',
+			sex: 'FEMALE',
 			organisation_id: 'Org-01',
 		})
 

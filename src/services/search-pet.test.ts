@@ -30,12 +30,18 @@ describe('Search Pet', () => {
 			name: 'Fiona',
 			pet_type: 'DOG',
 			age: 3,
+			sex: 'FEMALE',
+			size: 'SMALL',
+			may_live_with:'ANY',
 			organisation_id: 'Org-01',
 		})
 		await petsRepo.create({
 			name: 'Lyra',
 			pet_type: 'CAT',
 			age: 4,
+			sex: 'FEMALE',
+			size: 'SMALL',
+			may_live_with:'ANY',
 			organisation_id: 'Org-01',
 		})
 
@@ -63,6 +69,9 @@ describe('Search Pet', () => {
 				name: `Fiona ${i}`,
 				pet_type: 'DOG',
 				age: 3,
+				sex: 'FEMALE',
+				size: 'SMALL',
+				may_live_with:'ANY',
 				organisation_id: 'Org-01',
 			})
 		}
@@ -91,6 +100,8 @@ describe('Search Pet', () => {
 			pet_type: 'DOG',
 			age: 3,
 			sex: 'FEMALE',
+			size: 'SMALL',
+			may_live_with:'ANY',
 			organisation_id: 'Org-01',
 		})
 		await petsRepo.create({
@@ -98,6 +109,8 @@ describe('Search Pet', () => {
 			pet_type: 'DOG',
 			age: 3,
 			sex: 'MALE',
+			may_live_with:'ANY',
+			size: 'LARGE',
 			organisation_id: 'Org-01',
 		})
 		await petsRepo.create({
@@ -105,6 +118,8 @@ describe('Search Pet', () => {
 			pet_type: 'CAT',
 			age: 4,
 			sex: 'FEMALE',
+			size: 'TINY',
+			may_live_with:'ANY',
 			organisation_id: 'Org-01',
 		})
 

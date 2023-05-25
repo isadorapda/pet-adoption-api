@@ -4,19 +4,22 @@ import { RegisterOrganisationService } from '@/services/register-org.service'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
+export type OrgSchema = z.infer<typeof registerOrgBodySchema>
+
+const registerOrgBodySchema = z.object({
+	name: z.string(),
+	email: z.string().email(),
+	password: z.string().min(6),
+	address: z.string().optional(),
+	city: z.string(),
+	postcode: z.string(),
+	mobile: z.string().min(9),
+})
+
 export async function registerOrganisationController(
 	request: FastifyRequest,
 	reply: FastifyReply
 ) {
-	const registerOrgBodySchema = z.object({
-		name: z.string(),
-		email: z.string().email(),
-		password: z.string().min(6),
-		address: z.string(),
-		city: z.string(),
-		postcode: z.string(),
-		mobile: z.string().min(9),
-	})
 
 	const { name, email, password, address, postcode, mobile, city } =
     registerOrgBodySchema.parse(request.body)

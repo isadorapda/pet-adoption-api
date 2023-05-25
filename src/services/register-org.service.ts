@@ -7,7 +7,7 @@ interface RegisterOrganisationServiceRequest{
     name: string;
     email: string;
     city:string;
-    address:string | null;
+    address?:string ;
     password: string;
     mobile:string;
     postcode:string;

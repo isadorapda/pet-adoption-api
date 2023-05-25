@@ -1,9 +1,9 @@
 import {afterAll, beforeAll, describe, expect, test} from 'vitest'
 import request from 'supertest'
+import { prisma } from '@/lib/prisma'
 import { app } from '@/app'
 import { createAndAuthenticateOrganisation } from '@/utils/create-and-authenticate-org'
-import { prisma } from '@/lib/prisma'
-import { PetSize } from './search-pet.controller'
+import { MayLiveWith, PetSize } from './register-pet.controller'
 
 describe('Pet Controllers E2E', () => {
 	beforeAll(async() => {
@@ -25,12 +25,11 @@ describe('Pet Controllers E2E', () => {
 			breed:'Husky',
 			description: '',
 			ideal_home:'Outside space',
-			may_live_with:'',
+			may_live_with:MayLiveWith.ANY,
 			sex:'FEMALE',
 		})
 
 		expect(response.statusCode).toEqual(201)
-
 	})
 
 	
