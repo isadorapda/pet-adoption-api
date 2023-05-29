@@ -5,6 +5,7 @@ import { refresgAuthenticateOrganisationController } from './refresh-auth.contro
 import { profileController } from './fetch-org-profile'
 import { verifyJWT } from '@/http/middlewares/verify-jwt'
 import { fetchOrgController } from './fetch-org.controller'
+import {  tagPetAsAdoptedController } from './tag-adopted-pet.controller'
 
 export async function organisationRoutes(app:FastifyInstance){
 	app.post('/organisations', registerOrganisationController)
@@ -12,4 +13,5 @@ export async function organisationRoutes(app:FastifyInstance){
 	app.post('/sessions', authenticateOrganisationController)
 	app.patch('/token/refresh', refresgAuthenticateOrganisationController)
 	app.get('/me', {onRequest:[verifyJWT]}, profileController)
+	app.patch('/me/pets/:petId', tagPetAsAdoptedController)
 }

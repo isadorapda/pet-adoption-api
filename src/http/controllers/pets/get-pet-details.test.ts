@@ -3,7 +3,7 @@ import request from 'supertest'
 import { app } from '@/app'
 import { prisma } from '@/lib/prisma'
 import { createAndAuthenticateOrganisation } from '@/utils/create-and-authenticate-org'
-import { PetSize } from './search-pet.controller'
+import { MayLiveWith, PetSize } from './register-pet.controller'
 
 describe('Get pet details controller E2E', () => {
 	beforeAll(async () => {
@@ -26,7 +26,7 @@ describe('Get pet details controller E2E', () => {
 				breed: 'Husky',
 				description: '',
 				ideal_home: 'Outside space',
-				may_live_with: '',
+				may_live_with: MayLiveWith.ANY,
 				sex: 'FEMALE',
 				organisation_id:org.id,
 			}

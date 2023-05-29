@@ -30,12 +30,18 @@ describe('Search Pet', () => {
 			name: 'Fiona',
 			pet_type: 'DOG',
 			age: 3,
+			sex: 'FEMALE',
+			size: 'SMALL',
+			may_live_with:'ANY',
 			organisation_id: 'Org-01',
 		})
 		await petsRepo.create({
 			name: 'Lyra',
 			pet_type: 'CAT',
 			age: 4,
+			sex: 'FEMALE',
+			size: 'SMALL',
+			may_live_with:'ANY',
 			organisation_id: 'Org-01',
 		})
 
@@ -63,6 +69,9 @@ describe('Search Pet', () => {
 				name: `Fiona ${i}`,
 				pet_type: 'DOG',
 				age: 3,
+				sex: 'FEMALE',
+				size: 'SMALL',
+				may_live_with:'ANY',
 				organisation_id: 'Org-01',
 			})
 		}
@@ -91,6 +100,8 @@ describe('Search Pet', () => {
 			pet_type: 'DOG',
 			age: 3,
 			sex: 'FEMALE',
+			size: 'SMALL',
+			may_live_with:'ANY',
 			organisation_id: 'Org-01',
 		})
 		await petsRepo.create({
@@ -98,32 +109,35 @@ describe('Search Pet', () => {
 			pet_type: 'DOG',
 			age: 3,
 			sex: 'MALE',
+			may_live_with:'ANY',
+			size: 'LARGE',
 			organisation_id: 'Org-01',
 		})
 		await petsRepo.create({
 			name: 'Lyra',
 			pet_type: 'CAT',
-			age: 4,
+			age: 4.5,
 			sex: 'FEMALE',
+			size: 'TINY',
+			may_live_with:'ANY',
 			organisation_id: 'Org-01',
 		})
 
 		const {pets} = await sut.searchPetService({
 			location:'Manchester',
-			pet_type:'DOG',
-			age:3,
+			pet_type:'CAT',
+			age_min:4,
+			age_max:5.9,
 			limit: 20,
 			page:1
 		})
 
-		expect(pets).toHaveLength(2)
+		expect(pets).toHaveLength(1)
 		expect(pets).toEqual([
 			expect.objectContaining({
-				name:'Fiona'
+				name:'Lyra'
 			}),
-			expect.objectContaining({
-				name:'Martin'
-			})
+			
 		])
 	})
 	

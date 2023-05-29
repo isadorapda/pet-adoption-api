@@ -6,6 +6,7 @@ import { InMemoryOrganisationsRepository } from './in-memory-org-repository'
 
 export class InMomoryPetsRepository implements PetsRepository{
 	constructor(private organisationRepository:InMemoryOrganisationsRepository){}
+
 	public pets:Pet[]=[]
 
 	async create(data: Prisma.PetUncheckedCreateInput): Promise<Pet> {
@@ -13,13 +14,14 @@ export class InMomoryPetsRepository implements PetsRepository{
 			id: data.id ?? randomUUID(),
 			name: data.name,
 			pet_type: data.pet_type,
-			sex: data.sex ?? null,
-			size: data.size ?? null,
+			sex: data.sex ,
+			size: data.size, 
 			description: data.description ?? null,
-			may_live_with: data.may_live_with ?? null,
-			ideal_home: data.ideal_home ?? null,
+			may_live_with: data.may_live_with,
+			ideal_home: data.ideal_home ?? null ,
 			breed: data.breed ?? null,
-			age: data.age ?? null,
+			age: data.age,
+			adopted_at: data.adopted_at? new Date(data.adopted_at): null,
 			organisation_id: data.organisation_id ?? randomUUID(),
 		}
 		this.pets.push(pet)
@@ -37,9 +39,19 @@ export class InMomoryPetsRepository implements PetsRepository{
 		if(!petFilters){
 			return petsByCity
 		}
-		const filterPets = petsByCity.filter((pet)=> (!petFilters.age || pet.age === petFilters.age) && (!petFilters.breed || pet.breed === petFilters.breed)&& (!petFilters.pet_type|| pet.pet_type === petFilters.pet_type) && (!petFilters.sex || pet.sex === petFilters.sex) && (!petFilters.size || pet.size === petFilters.size) && (!petFilters.name || pet.name.includes(petFilters.name))).slice((page-1)*limit,page*limit)
+		const filterPets = () =>{
+			const filtered:Pet[] = []
 
-		return filterPets
+			petsByCity.forEach((pet)=>{
+				if(((!petFilters.age_min || pet.age >= petFilters.age_min) &&  (!petFilters.age_max || pet.age <= petFilters.age_max))&&(!petFilters.pet_type|| pet.pet_type === petFilters.pet_type) && (!petFilters.sex || pet.sex === petFilters.sex)&& (!petFilters.name || pet.name.includes(petFilters.name))&&(!petFilters.breed || (pet.breed!==null&& petFilters.breed.includes(pet.breed))) && (!petFilters.size || petFilters.size.includes(pet.size))) {
+					filtered.push(pet)
+				}
+
+			})
+			return filtered.slice((page-1)*limit,page*limit)
+		}
+
+		return filterPets()
 		
 	}
 	async findById(petId: string): Promise<Pet | null> {
@@ -51,6 +63,14 @@ export class InMomoryPetsRepository implements PetsRepository{
 		return pet
 	}
 	
+	async save(data: Pet): Promise<Pet> {
+		const petIndex = this.pets.findIndex((pet)=> pet.id === data.id)
 
+		if(petIndex!==-1){
+			this.pets[petIndex]=data
+		}
+
+		return data
+	}
     
 }

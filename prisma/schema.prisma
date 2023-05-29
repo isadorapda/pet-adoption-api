@@ -28,17 +28,26 @@ enum PetType {
   CAT
 }
 
+enum MayLiveWith {
+  CATS
+  DOGS
+  CHILDREN
+  ELDER
+  ANY
+}
+
 model Pet {
-  id            String  @id @default(uuid())
+  id            String      @id @default(uuid())
   name          String
   pet_type      PetType
-  sex           Sex?
+  sex           Sex
   description   String?
   breed         String?
-  age           Float?
-  size          Size?
-  may_live_with String?
+  age           Float
+  size          Size
+  may_live_with MayLiveWith
   ideal_home    String?
+  adopted_at    DateTime?
 
   pet_photos PetPhoto[]
 
