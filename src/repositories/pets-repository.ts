@@ -3,7 +3,7 @@ import { Filters } from '@/http/controllers/pets/search-pet.controller'
 
 export interface PetsRepository {
   create(data: Prisma.PetUncheckedCreateInput): Promise<Pet>
-  searchPets(filters: Filters): Promise<Pet[]>
+  searchPets(filters: Filters): Promise<{pets: Pet[], count:number}>
   findById(petId: string): Promise<Pet | null>
   save(data: Pet): Promise<Pet>
 }

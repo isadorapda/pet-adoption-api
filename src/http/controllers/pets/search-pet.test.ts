@@ -184,8 +184,6 @@ describe('Search pet controller', () => {
 			.get('/pets/search')
 			.query({ location: 'Manchester', age_min:0.6, age_max:2.9 })
 			.send()
-
-		console.log('DATA', response3.body.pets)
 		expect(response3.statusCode).toEqual(200)
 		expect(response3.body.pets).toHaveLength(2)
 		expect(response3.body.pets).toEqual([

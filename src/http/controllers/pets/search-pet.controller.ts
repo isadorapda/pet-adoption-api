@@ -13,7 +13,9 @@ const searchQuerySchema = z.object({
 	age_min: z.coerce.number().optional(),
 	age_max: z.coerce.number().optional(),
 	sex: z.enum(['MALE', 'FEMALE']).optional(),
-	size: z.union([z.array(z.nativeEnum(PetSize)),z.nativeEnum(PetSize)]).optional(),
+	size: z
+		.union([z.array(z.nativeEnum(PetSize)), z.nativeEnum(PetSize)])
+		.optional(),
 	breed: z.array(z.string()).optional(),
 	may_live_with: z.array(z.nativeEnum(MayLiveWith)).optional(),
 	ideal_home: z.string().optional(),
@@ -29,7 +31,6 @@ export async function searchPetController(
 	const petsRepository = new PrismaPetsRepository()
 	const searchPetsService = new SearchPetService(petsRepository)
 
-	const { pets } = await searchPetsService.searchPetService(filters)
-
-	return reply.status(200).send({ pets })
+	const { pets, count } = await searchPetsService.searchPetService(filters)
+	return reply.status(200).send({ count, pets, page: filters.page })
 }
