@@ -150,7 +150,7 @@ describe('Search pet controller', () => {
 					ideal_home: 'Outside space',
 					sex: 'FEMALE',
 					organisation_id: org.id,
-					may_live_with: MayLiveWith.ANY,
+					may_live_with: 'ANY',
 				},
 				{
 					name: 'Bob',
@@ -161,7 +161,7 @@ describe('Search pet controller', () => {
 					description: '',
 					ideal_home: 'Outside space',
 					sex: 'MALE',
-					may_live_with: MayLiveWith.ANY,
+					may_live_with: 'ANY',
 					organisation_id: org.id,
 				},
 				{
@@ -173,7 +173,7 @@ describe('Search pet controller', () => {
 					description: '',
 					ideal_home: 'Outside space',
 					sex: 'FEMALE',
-					may_live_with: MayLiveWith.ANY,
+					may_live_with: 'ANY',
 					organisation_id: org.id,
 				},
 			],
@@ -182,17 +182,15 @@ describe('Search pet controller', () => {
 
 		const response3 = await request(app.server)
 			.get('/pets/search')
-			.query({ location: 'Manchester', age_min:0.6, age_max:2.9 })
+			.query({ location: 'Manchester', age_min:3, age_max:4.9 })
 			.send()
 		expect(response3.statusCode).toEqual(200)
-		expect(response3.body.pets).toHaveLength(2)
+		expect(response3.body.pets).toHaveLength(1)
 		expect(response3.body.pets).toEqual([
 			expect.objectContaining({
-				name: 'Fiona',
+				name: 'Lila',
 			}),
-			expect.objectContaining({
-				name: 'Bob',
-			}),
+			
 		])
 	})
 })
