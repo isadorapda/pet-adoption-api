@@ -27,17 +27,17 @@ export class InMomoryPetsRepository implements PetsRepository{
 		this.pets.push(pet)
 		return pet
 	}
-	async searchPets({location, page,limit,...petFilters}:Filters): Promise<Pet[]> {
+	async searchPets({location, page,limit,...petFilters}:Filters): Promise<{pets:Pet[],count:number}> {
 		const org = await this.organisationRepository.findManyByCity(location)
 
 		if(!org){
-			return []
+			return {pets:[],count:0}
 		}
 		const petsByCity = this.pets.filter((pet)=> {
 			return org.find((org)=> org.id === pet.organisation_id)
 		})
 		if(!petFilters){
-			return petsByCity
+			return {pets:petsByCity,count:petsByCity.length}
 		}
 		const filterPets = () =>{
 			const filtered:Pet[] = []
@@ -48,7 +48,7 @@ export class InMomoryPetsRepository implements PetsRepository{
 				}
 
 			})
-			return filtered.slice((page-1)*limit,page*limit)
+			return {pets:filtered.slice((page-1)*limit,page*limit), count:filtered.length}
 		}
 
 		return filterPets()
