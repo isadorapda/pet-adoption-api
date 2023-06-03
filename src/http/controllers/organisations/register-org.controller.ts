@@ -12,8 +12,8 @@ const registerOrgBodySchema = z.object({
 	password: z.string().min(6),
 	address: z.string().optional(),
 	city: z.string(),
-	postcode: z.string(),
-	mobile: z.string().min(9),
+	postcode: z.string().min(5),
+	mobile: z.string().min(9).trim().regex(/^[1-9]\d*$/g),
 })
 
 export async function registerOrganisationController(

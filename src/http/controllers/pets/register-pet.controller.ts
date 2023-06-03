@@ -28,18 +28,15 @@ export async function registerPetController(
 	})
 
 	const registerPetBodySchema = z.object({
-		name: z.string(),
+		name: z.string().min(2),
 		pet_type: z.enum(['DOG', 'CAT']),
-		age: z.coerce.number({
-			required_error: 'Age is required',
-			invalid_type_error: 'Age must be a number',
-		}).positive(),
+		age: z.coerce.number().gt(0),
 		sex: z.enum(['MALE', 'FEMALE']),
 		size: z.nativeEnum(PetSize),
-		description: z.string().optional(),
+		description: z.string().max(1000).optional(),
 		breed: z.string().optional(),
 		may_live_with: z.nativeEnum(MayLiveWith),
-		ideal_home: z.string().optional(),
+		ideal_home: z.string().max(500).optional(),
 	})
 
 	const { organisationId } = registerPetParamsSchema.parse(request.params)
