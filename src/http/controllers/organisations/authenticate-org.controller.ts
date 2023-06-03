@@ -1,5 +1,6 @@
 import { PrismaOrganisationsRepository } from '@/repositories/prisma/prisma-organisation-repository'
 import { AuthenticateOrganisationService } from '@/services/authenticate-org.service'
+import { InvalidCredentialsError } from '@/services/errors/invalid-credentials-error'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import {z} from 'zod'
 
@@ -44,7 +45,8 @@ export async function authenticateOrganisationController(request:FastifyRequest,
 			sameSite:true
 		}).status(200).send({token})
 	} catch (error) {
-		throw new Error()
+
+		throw new InvalidCredentialsError()
 	}
 
 }
