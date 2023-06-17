@@ -5,9 +5,7 @@ import { Filters } from '@/http/controllers/pets/search-pet.controller'
 import { SearchPetServiceResponse } from '@/services/search-pet.service'
 
 export class PrismaPetsRepository implements PetsRepository {
-
-
-
+	
 	async searchPets({
 		location,
 		page,
@@ -98,5 +96,13 @@ export class PrismaPetsRepository implements PetsRepository {
 			data,
 		})
 		return pet
+	}
+
+	async delete(pet: Pet): Promise<void> {
+		await prisma.pet.delete({
+			where: {
+				id: pet.id
+			}
+		})
 	}
 }

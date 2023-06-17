@@ -6,7 +6,7 @@ import { InMemoryOrganisationsRepository } from './in-memory-org-repository'
 
 export class InMomoryPetsRepository implements PetsRepository{
 	constructor(private organisationRepository:InMemoryOrganisationsRepository){}
-
+	
 	public pets:Pet[]=[]
 
 	async create(data: Prisma.PetUncheckedCreateInput): Promise<Pet> {
@@ -72,5 +72,8 @@ export class InMomoryPetsRepository implements PetsRepository{
 
 		return data
 	}
-    
+	async delete(pet: Pet): Promise<void> {
+		const petIndex = this.pets.findIndex((item)=> pet.id===item.id)
+		this.pets.splice(petIndex, 1)
+	}
 }
