@@ -90,7 +90,7 @@ describe('Organisation Controllers E2E', () => {
 		})
 
 		expect(editOrgResponse.status).toEqual(200)
-		expect(editOrgResponse.body).toEqual(
+		expect(editOrgResponse.body.organisation).toEqual(
 			expect.objectContaining({
 				address: 'New Address',
 			})

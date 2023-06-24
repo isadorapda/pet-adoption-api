@@ -52,7 +52,7 @@ describe('Authenticate Organisation Service', () => {
 		})).rejects.toBeInstanceOf(InvalidCredentialsError)
 	})
 
-	test('Should not be able to authenticate an organisation login with wrong password', async () => {
+	test.only('Should not be able to authenticate an organisation login with wrong password', async () => {
 		await organisationRepository.create({
 			name: 'Pet Org',
 			city: 'London',

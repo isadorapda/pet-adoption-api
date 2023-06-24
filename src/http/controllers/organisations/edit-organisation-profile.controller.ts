@@ -34,7 +34,7 @@ export async function editOrganisationController(
 			orgId,
 			...body
 		})
-		return reply.status(200).send(organisation)
+		return reply.status(200).send({organisation})
 	} catch (error) {
 		if (error instanceof EmailAlreadyRegisteredError) {
 			return reply.status(409).send({

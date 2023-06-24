@@ -22,7 +22,7 @@ export async function registerOrganisationController(
 ) {
 
 	const { name, email, password, address, postcode, mobile, city } =
-    registerOrgBodySchema.parse(request.body)
+		registerOrgBodySchema.parse(request.body)
 
 	try {
 		const orgRepository = new PrismaOrganisationsRepository()
@@ -36,7 +36,7 @@ export async function registerOrganisationController(
 			mobile,
 			city,
 		})
-		return reply.status(201).send({ ...organisation, password_hash:undefined })
+		return reply.status(200).send({organisation})
 	} catch (error) {
 		if (error instanceof EmailAlreadyRegisteredError) {
 			return reply.status(409).send({
@@ -44,5 +44,5 @@ export async function registerOrganisationController(
 			})
 		}
 		throw error
-	}	
+	}
 }
