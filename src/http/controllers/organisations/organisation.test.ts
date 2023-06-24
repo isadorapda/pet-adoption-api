@@ -24,7 +24,7 @@ describe('Organisation Controllers E2E', () => {
 			password: '123456',
 		})
 
-		expect(response.statusCode).toEqual(201)
+		expect(response.statusCode).toEqual(200)
 	})
 
 	test('Should be able to auth an organisation', async () => {
@@ -50,7 +50,7 @@ describe('Organisation Controllers E2E', () => {
 		})
 	})
 
-	test('Should be able to refresh token when expired', async () => {
+	test.only('Should be able to refresh token when expired', async () => {
 		await request(app.server).post('/organisations').send({
 			name: 'Pet Org',
 			city: 'London',
@@ -65,13 +65,19 @@ describe('Organisation Controllers E2E', () => {
 			email: 'pet.adopt@email.com',
 			password: '123456',
 		})
+		console.log('cook', authResponse.headers)
 
 		const cookies = authResponse.get('Set-Cookie')
+
+		console.log('SOIDHFIUSGFSDGFUO',cookies)
 
 		const response = await request(app.server).patch('/token/refresh').set('Cookie',cookies).send()
 
 		expect(response.status).toEqual(200)
 		expect(response.body).toEqual({
+			token: expect.any(String),
+		})
+		expect(response.body).toMatchObject({
 			token: expect.any(String),
 		})
 

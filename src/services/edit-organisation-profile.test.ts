@@ -3,12 +3,15 @@ import { EditOrganisationProfileService } from './edit-organisation-profile.serv
 import { InMemoryOrganisationsRepository } from '@/repositories/in-memory/in-memory-org-repository'
 import { hash } from 'bcryptjs'
 import { EmailAlreadyRegisteredError } from './errors/email-already-registered-error'
+import { InMomoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository'
 
 let organisationRepository:InMemoryOrganisationsRepository
+let petsRepository: InMomoryPetsRepository
 let sut: EditOrganisationProfileService
 describe('Edit Organisation Profile Service', () => {
 	beforeEach(() => {
-		organisationRepository = new InMemoryOrganisationsRepository()
+		petsRepository = new InMomoryPetsRepository(organisationRepository)
+		organisationRepository = new InMemoryOrganisationsRepository(petsRepository)
 		sut = new EditOrganisationProfileService(organisationRepository)
 	})
 
