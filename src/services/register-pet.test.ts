@@ -11,7 +11,7 @@ let sut: RegisterPetService
 
 describe('Register a pet service', () => {
 	beforeEach(() => {
-		organisationsRepository = new InMemoryOrganisationsRepository()
+		organisationsRepository = new InMemoryOrganisationsRepository(petsRepository)
 		petsRepository = new InMomoryPetsRepository(organisationsRepository)
 		sut = new RegisterPetService(organisationsRepository, petsRepository)
         

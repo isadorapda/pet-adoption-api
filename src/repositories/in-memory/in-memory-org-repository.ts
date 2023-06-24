@@ -1,11 +1,17 @@
 import { Organisation, Prisma } from '@prisma/client'
-import { OrganisationRepository } from '../organisation-repository'
+import { OrganisationNoPassword, OrganisationRepository, SortProps } from '../organisation-repository'
 import { randomUUID } from 'node:crypto'
+import { removePasswordHash, removePasswordHashes } from '@/utils/removePasswordHash'
+import { EditOrganisationInput } from '@/types/organisation'
+import { InMomoryPetsRepository } from './in-memory-pets-repository'
 
-export class InMemoryOrganisationsRepository implements OrganisationRepository{
+export class InMemoryOrganisationsRepository implements OrganisationRepository {
+	constructor(private petsRepository: InMomoryPetsRepository){}
+
 	public orgs: Organisation[] = []
+	public partialOrgs: EditOrganisationInput[] = []
 
-	async create(data: Prisma.OrganisationCreateInput): Promise<Organisation> {
+	async create(data: Prisma.OrganisationCreateInput): Promise<OrganisationNoPassword> {
 		const org = {
 			id: data.id ?? randomUUID(),
 			name: data.name,
@@ -14,37 +20,75 @@ export class InMemoryOrganisationsRepository implements OrganisationRepository{
 			city: data.city,
 			mobile: data.mobile,
 			password_hash: data.password_hash,
-			address: data.address??null,
+			address: data.address ?? null,
+			created_at:  new Date(),
 		}
 
 		this.orgs.push(org)
+		return removePasswordHash(org)
+
+	}
+	async findByEmail(email: string): Promise<OrganisationNoPassword | null> {
+		const organisation = this.orgs.find((org) => org.email === email)
+		if (!organisation) {
+			return null
+		}
+
+		return removePasswordHash(organisation)
+	}
+
+	async findById(id: string): Promise<OrganisationNoPassword | null> {
+		const organisation = this.orgs.find((org) => org.id === id)
+		if (!organisation) {
+			return null
+		}
+
+		return removePasswordHash(organisation)
+	}
+
+	async findManyByCity(city: string): Promise<OrganisationNoPassword[] | null> {
+		const organisation = this.orgs.filter((org) => org.city === city)
+		if (!organisation) {
+			return null
+		}
+
+		return removePasswordHashes(organisation)
+	}
+
+	async save(data: EditOrganisationInput): Promise<Partial<OrganisationNoPassword>> {
+		const orgIndex = this.partialOrgs.findIndex((org) => org.id === data.id)
+		if (orgIndex !== -1) {
+			this.partialOrgs[orgIndex] = data
+		}
+		const { password_hash: _password_hash, ...org } = data
 		return org
-
 	}
-	async findByEmail(email: string): Promise<Organisation | null> {
-		const organisation  = this.orgs.find((org)=>org.email === email)
-		if(!organisation) {
-			return null
+
+	async deleteAccount(data: OrganisationNoPassword): Promise<void> {
+		const orgIndex = this.orgs.findIndex((org) => org.id === data.id)
+		if (orgIndex !== -1) {
+			this.orgs.splice(orgIndex, 1)
 		}
-
-		return organisation
 	}
-	async findById(id: string): Promise<Organisation | null> {
-		const organisation  = this.orgs.find((org)=>org.id === id)
-		if(!organisation) {
-			return null
-		}
 
-		return organisation
-	}
-	async findManyByCity(city: string){
-		const organisation  = this.orgs.filter((org)=>org.city === city)
-		if(!organisation) {
+	async findByEmailValidation(email: string): Promise<Organisation | null> {
+		const organisation = this.orgs.find((org) => org.email === email)
+		if (!organisation) {
 			return null
 		}
 
 		return organisation
 	}
 
+	async 	findSortedPetsByOrgId(id: string, { field, order, petType }: SortProps): Promise<OrganisationNoPassword | null> {
+		const organisation = this.orgs.find((org) => org.id === id)
+		if (!organisation) {
+			return null
+		}
+		// const parsedField = field as keyof 
+		//.sort((a, b) => {order === 'asc'? a[field]-b[field] : b[field]-a[field] }) 
+		const pets = this.petsRepository.pets.filter((pet) => pet.organisation_id === id)   
 
+		return removePasswordHash(organisation)
+	}
 }

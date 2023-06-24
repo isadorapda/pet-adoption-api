@@ -1,5 +1,4 @@
-import { OrganisationRepository } from '@/repositories/organisation-repository'
-import { Organisation } from '@prisma/client'
+import { OrganisationNoPassword, OrganisationRepository } from '@/repositories/organisation-repository'
 import { hash } from 'bcryptjs'
 import { EmailAlreadyRegisteredError } from './errors/email-already-registered-error'
 
@@ -13,7 +12,7 @@ interface RegisterOrganisationServiceRequest{
     postcode:string;
 }
 interface RegisterOrganisationServiceResponse{
-    organisation:Organisation
+    organisation:OrganisationNoPassword
 }
 
 export class RegisterOrganisationService{
@@ -37,7 +36,7 @@ export class RegisterOrganisationService{
 			city,
 			address
 		})
-
+		console.log('ORG', organisation)
 		return {organisation}
 	}
 }

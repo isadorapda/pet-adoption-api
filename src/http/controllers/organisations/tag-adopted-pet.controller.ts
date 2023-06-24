@@ -13,7 +13,7 @@ export async function tagPetAsAdoptedController(request:FastifyRequest, reply:Fa
 	const petRepository = new PrismaPetsRepository()
 	const service = new TagPetAsAdoptedService(petRepository )
 
-	await service.tagAdoptedPetService({petId})
+	const {pet} = await service.tagAdoptedPetService({petId})
 
-	return reply.status(204).send()
+	return reply.status(200).send({pet})
 }

@@ -3,14 +3,17 @@ import { AuthenticateOrganisationService } from './authenticate-org.service'
 import { InMemoryOrganisationsRepository } from '@/repositories/in-memory/in-memory-org-repository'
 import { hash } from 'bcryptjs'
 import { InvalidCredentialsError } from './errors/invalid-credentials-error'
+import { InMomoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository'
 
 
 let organisationRepository:InMemoryOrganisationsRepository
+let petsRepository: InMomoryPetsRepository
 let sut: AuthenticateOrganisationService
 
 describe('Authenticate Organisation Service', () => {
 	beforeEach(() => {
-		organisationRepository = new InMemoryOrganisationsRepository()
+		petsRepository = new InMomoryPetsRepository(organisationRepository)
+		organisationRepository = new InMemoryOrganisationsRepository(petsRepository)
 		sut = new AuthenticateOrganisationService(organisationRepository)
 	})
 
@@ -20,7 +23,7 @@ describe('Authenticate Organisation Service', () => {
 			city: 'London',
 			postcode: 'AB12 3CD',
 			email: 'pet.org@email.com',
-			mobile:'07123456789',
+			mobile:'447123456789',
 			address: '',
 			password_hash: await hash('123456',6),
 		})
@@ -34,9 +37,17 @@ describe('Authenticate Organisation Service', () => {
 	})
 
 	test('Should not be able to authenticate an organisation login with a wrong email', async () => {
-	
-		await expect(()=>sut.authenticateOrgService({
+		await organisationRepository.create({
+			name: 'Pet Org',
+			city: 'London',
+			postcode: 'AB12 3CD',
 			email: 'pet.org@email.com',
+			mobile:'447123456789',
+			address: '',
+			password_hash: await hash('123456',6),
+		})
+		await expect(()=>sut.authenticateOrgService({
+			email: 'petOrg@email.com',
 			password:'123456'
 		})).rejects.toBeInstanceOf(InvalidCredentialsError)
 	})
@@ -47,7 +58,7 @@ describe('Authenticate Organisation Service', () => {
 			city: 'London',
 			postcode: 'AB12 3CD',
 			email: 'pet.org@email.com',
-			mobile:'07123456789',
+			mobile:'447123456789',
 			address: '',
 			password_hash: await hash('123456',6),
 		})

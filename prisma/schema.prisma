@@ -2,81 +2,83 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 enum Sex {
-  MALE
-  FEMALE
+    MALE
+    FEMALE
 }
 
 enum Size {
-  TINY
-  SMALL
-  MEDIUM
-  LARGE
-  GIANT
+    TINY
+    SMALL
+    MEDIUM
+    LARGE
+    GIANT
 }
 
 enum PetType {
-  DOG
-  CAT
+    DOG
+    CAT
 }
 
 enum MayLiveWith {
-  CATS
-  DOGS
-  CHILDREN
-  ELDER
-  ANY
+    CATS
+    DOGS
+    CHILDREN
+    ELDER
+    ANY
 }
 
 model Pet {
-  id            String      @id @default(uuid())
-  name          String
-  pet_type      PetType
-  sex           Sex
-  description   String?
-  breed         String?
-  age           Float
-  size          Size
-  may_live_with MayLiveWith
-  ideal_home    String?
-  adopted_at    DateTime?
+    id            String      @id @default(uuid())
+    name          String
+    pet_type      PetType
+    sex           Sex
+    description   String?
+    breed         String?
+    age           Float
+    size          Size
+    may_live_with MayLiveWith
+    ideal_home    String?
+    adopted_at    DateTime?
+    created_at    DateTime    @default(now())
 
-  pet_photos PetPhoto[]
+    pet_photos PetPhoto[]
 
-  organisation    Organisation @relation(fields: [organisation_id], references: [id])
-  organisation_id String
+    organisation    Organisation @relation(fields: [organisation_id], references: [id])
+    organisation_id String
 
-  @@map("pets")
+    @@map("pets")
 }
 
 model PetPhoto {
-  id     String @id @default(uuid())
-  url    String
-  pet    Pet    @relation(fields: [pet_id], references: [id])
-  pet_id String
+    id     String @id @default(uuid())
+    url    String
+    pet    Pet    @relation(fields: [pet_id], references: [id])
+    pet_id String
 
-  @@map("pet_photos")
+    @@map("pet_photos")
 }
 
 model Organisation {
-  id            String  @id @default(uuid())
-  name          String
-  city          String
-  address       String?
-  postcode      String
-  mobile        String
-  email         String  @unique
-  password_hash String
+    id            String   @id @default(uuid())
+    name          String
+    city          String
+    address       String?
+    postcode      String
+    mobile        String
+    email         String   @unique
+    password_hash String
+    created_at    DateTime @default(now())
 
-  pets Pet[]
+    pets Pet[]
 
-  @@map("organisations")
+    @@map("organisations")
 }

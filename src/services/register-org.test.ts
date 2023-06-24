@@ -1,15 +1,18 @@
 import { InMemoryOrganisationsRepository } from '@/repositories/in-memory/in-memory-org-repository'
 import {beforeEach, describe, expect, test} from 'vitest'
 import { RegisterOrganisationService } from './register-org.service'
-import { compare } from 'bcryptjs'
+import { compare, hash } from 'bcryptjs'
 import { EmailAlreadyRegisteredError } from './errors/email-already-registered-error'
+import { InMomoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository'
 
 let organisationsRepository: InMemoryOrganisationsRepository
+let petsRepository: InMomoryPetsRepository
 let sut: RegisterOrganisationService
 
 describe('Register Organisation Service', () => {
 	beforeEach(()=>{
-		organisationsRepository = new InMemoryOrganisationsRepository()
+		petsRepository = new InMomoryPetsRepository(organisationsRepository)
+		organisationsRepository = new InMemoryOrganisationsRepository(petsRepository)
 		sut = new RegisterOrganisationService(organisationsRepository)
 	})
 
@@ -19,7 +22,7 @@ describe('Register Organisation Service', () => {
 			city: 'London',
 			postcode: 'AB12 3CD',
 			email: 'pet.org@email.com',
-			mobile:'07123456789',
+			mobile:'447123456789',
 			address: '',
 			password: '123456',
 		})
@@ -33,12 +36,13 @@ describe('Register Organisation Service', () => {
 			city: 'London',
 			postcode: 'AB12 3CD',
 			email: 'pet.org@email.com',
-			mobile:'07123456789',
+			mobile:'447123456789',
 			address: '',
 			password: '123456',
 		})
+		const password_hash = await hash('123456',6)
 
-		const isPasswordCorrectlyHashed = await compare('123456',organisation.password_hash )
+		const isPasswordCorrectlyHashed = await compare('123456',password_hash )
 
 		expect(isPasswordCorrectlyHashed).toBe(true)
 
@@ -53,7 +57,7 @@ describe('Register Organisation Service', () => {
 			city: 'London',
 			postcode: 'AB12 3CD',
 			email:email,
-			mobile:'07123456789',
+			mobile:'447123456789',
 			address: '',
 			password: '123456',
 		})
@@ -64,7 +68,7 @@ describe('Register Organisation Service', () => {
 				city: 'London',
 				postcode: 'AB12 3CD',
 				email:email,
-				mobile:'07123456789',
+				mobile:'447123456789',
 				address: '',
 				password: '123456',
 			})).rejects.toBeInstanceOf(EmailAlreadyRegisteredError)

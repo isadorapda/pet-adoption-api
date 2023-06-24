@@ -32,9 +32,9 @@ export async function registerPetController(
 		pet_type: z.enum(['DOG', 'CAT']),
 		age: z.coerce.number().gt(0),
 		sex: z.enum(['MALE', 'FEMALE']),
-		size: z.nativeEnum(PetSize),
+		size: z.enum(['TINY','SMALL','MEDIUM','LARGE','GIANT']),
 		description: z.string().max(1000).optional(),
-		breed: z.string().optional(),
+		breed: z.string().optional().transform((val)=> val?.toLowerCase().replace(/\W/g, '_')),
 		may_live_with: z.nativeEnum(MayLiveWith),
 		ideal_home: z.string().max(500).optional(),
 	})
@@ -59,7 +59,6 @@ export async function registerPetController(
 		orgRepository,
 		petRepository
 	)
-
 	await registerPetService.registerPetService({
 		organisationId,
 		age,
