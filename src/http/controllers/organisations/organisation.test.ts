@@ -83,6 +83,7 @@ describe('Organisation Controllers E2E', () => {
 	test('Should be able to edit organisation\'s profile', async ()=>{
 		const {token} = await createAndAuthenticateOrganisation(app)
 		const org = await prisma.organisation.findFirstOrThrow()
+
 		const editOrgResponse = await request(app.server).patch(`/me/${org.id}/edit`).set('Authorization', `Bearer ${token}`).send({
 			mobile: '447123456700',
 			address: 'New Address',
@@ -145,7 +146,7 @@ describe('Organisation Controllers E2E', () => {
 		expect(editOrgResponse.status).toEqual(200)
 	})
 
-	test.only('Should be able to edit pet details', async ()=>{
+	test('Should be able to edit pet details', async ()=>{
 		const {token} = await createAndAuthenticateOrganisation(app)
 		const org = await prisma.organisation.findFirstOrThrow()
 		const pet = await prisma.pet.create({
