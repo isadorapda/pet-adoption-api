@@ -8,4 +8,5 @@ export interface PetsRepository {
   findById(petId: string): Promise<Pet | null>
   delete(pet: Pet): Promise<void>
   save(data: EditPetInput): Promise<Pet>
+  getBreeds():Promise<Array<string>>
 }

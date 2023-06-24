@@ -4,7 +4,7 @@ import { authenticateOrganisationController } from './authenticate-org.controlle
 import { refresgAuthenticateOrganisationController } from './refresh-auth.controller'
 import { profileController } from './fetch-org-profile'
 import { verifyJWT } from '@/http/middlewares/verify-jwt'
-import { fetchOrgController } from './fetch-org.controller'
+import { fetchOrgSortedPetsController } from './fetch-org-sorted-pets.controller'
 import {  tagPetAsAdoptedController } from './tag-adopted-pet.controller'
 import { editPetController } from './edit-pet.controller'
 import { deletePetController } from './delete-pet.controller'
@@ -13,7 +13,7 @@ import { deleteOrganisationController } from './delete-organisation.controller'
 
 export async function organisationRoutes(app:FastifyInstance){
 	app.post('/organisations', registerOrganisationController)
-	app.get('/organisations/:orgId', fetchOrgController)
+	app.get('/organisations/:orgId', fetchOrgSortedPetsController)
 	app.post('/sessions', authenticateOrganisationController)
 	app.patch('/token/refresh', refresgAuthenticateOrganisationController)
 	app.get('/me', {onRequest:[verifyJWT]}, profileController)

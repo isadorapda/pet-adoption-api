@@ -25,10 +25,10 @@ export class RegisterPetService {
 	async registerPetService({ organisationId, name, sex, pet_type, size, age, breed, description, ideal_home, may_live_with }: RegisterPetServiceRequest): Promise<RegisterPetServiceResponse> {
 
 		const org = await this.organisationRepository.findById(organisationId)
-
 		if (!org) {
 			throw new ResourceNotFoundError()
 		}
+        
 		const pet = await this.petsRepository.create({
 			name,
 			sex,

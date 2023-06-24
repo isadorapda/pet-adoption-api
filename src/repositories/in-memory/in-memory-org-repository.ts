@@ -1,10 +1,13 @@
 import { Organisation, Prisma } from '@prisma/client'
-import { OrganisationNoPassword, OrganisationRepository } from '../organisation-repository'
+import { OrganisationNoPassword, OrganisationRepository, SortProps } from '../organisation-repository'
 import { randomUUID } from 'node:crypto'
 import { removePasswordHash, removePasswordHashes } from '@/utils/removePasswordHash'
 import { EditOrganisationInput } from '@/types/organisation'
+import { InMomoryPetsRepository } from './in-memory-pets-repository'
 
 export class InMemoryOrganisationsRepository implements OrganisationRepository {
+	constructor(private petsRepository: InMomoryPetsRepository){}
+
 	public orgs: Organisation[] = []
 	public partialOrgs: EditOrganisationInput[] = []
 
@@ -18,6 +21,7 @@ export class InMemoryOrganisationsRepository implements OrganisationRepository {
 			mobile: data.mobile,
 			password_hash: data.password_hash,
 			address: data.address ?? null,
+			created_at:  new Date(),
 		}
 
 		this.orgs.push(org)
@@ -74,5 +78,17 @@ export class InMemoryOrganisationsRepository implements OrganisationRepository {
 		}
 
 		return organisation
+	}
+
+	async 	findSortedPetsByOrgId(id: string, { field, order, petType }: SortProps): Promise<OrganisationNoPassword | null> {
+		const organisation = this.orgs.find((org) => org.id === id)
+		if (!organisation) {
+			return null
+		}
+		// const parsedField = field as keyof 
+		//.sort((a, b) => {order === 'asc'? a[field]-b[field] : b[field]-a[field] }) 
+		const pets = this.petsRepository.pets.filter((pet) => pet.organisation_id === id)   
+
+		return removePasswordHash(organisation)
 	}
 }

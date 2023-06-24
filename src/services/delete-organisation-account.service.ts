@@ -1,15 +1,17 @@
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
-import { OrganisationRepository } from '@/repositories/organisation-repository'
+import { OrganisationRepository, SortProps } from '@/repositories/organisation-repository'
 
 interface DeleteOrganisationServiceRequest{
     orgId:string
+    sort:SortProps
 }
 
 
 export class DeleteOrganisationService{
 	constructor(private organisationsRepository: OrganisationRepository){}
 
-	async deleteOrganisationService({orgId}:DeleteOrganisationServiceRequest):Promise<void> {
+	async deleteOrganisationService(orgProps:DeleteOrganisationServiceRequest):Promise<void> {
+		const {orgId} = orgProps
 		const organisation = await this.organisationsRepository.findById(orgId)
 
 		if(!organisation){

@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { PrismaPetsRepository } from '@/repositories/prisma/prisma-pets-repository'
 import { SearchPetService } from '@/services/search-pet.service'
-import { MayLiveWith, PetSize } from './register-pet.controller'
+import { MayLiveWith } from './register-pet.controller'
 
 export type Filters = z.infer<typeof searchQuerySchema>
 
@@ -14,10 +14,10 @@ const searchQuerySchema = z.object({
 	age_max: z.coerce.number().optional(),
 	sex: z.enum(['MALE', 'FEMALE']).optional(),
 	size: z
-		.union([z.array(z.nativeEnum(PetSize)), z.nativeEnum(PetSize)])
+		.union([z.array(z.enum(['TINY','SMALL','MEDIUM','LARGE','GIANT'])), z.enum(['TINY','SMALL','MEDIUM','LARGE','GIANT'])])
 		.optional(),
-	breed: z.array(z.string()).optional(),
-	may_live_with: z.array(z.nativeEnum(MayLiveWith)).optional(),
+	breed: z.union([z.array(z.string()),z.string()]).optional(),
+	may_live_with: z.union([z.array(z.nativeEnum(MayLiveWith)),z.nativeEnum(MayLiveWith)]).optional(),
 	ideal_home: z.string().optional(),
 	page: z.coerce.number().min(1).default(1),
 	limit: z.coerce.number().min(1).default(20),

@@ -6,7 +6,7 @@ import { InMemoryOrganisationsRepository } from './in-memory-org-repository'
 
 export class InMomoryPetsRepository implements PetsRepository{
 	constructor(private organisationRepository:InMemoryOrganisationsRepository){}
-	
+   
 	public pets:Pet[]=[]
 
 	async create(data: Prisma.PetUncheckedCreateInput): Promise<Pet> {
@@ -23,6 +23,7 @@ export class InMomoryPetsRepository implements PetsRepository{
 			age: data.age,
 			adopted_at: data.adopted_at? new Date(data.adopted_at): null,
 			organisation_id: data.organisation_id ?? randomUUID(),
+			created_at: new Date(),
 		}
 		this.pets.push(pet)
 		return pet
@@ -43,7 +44,7 @@ export class InMomoryPetsRepository implements PetsRepository{
 			const filtered:Pet[] = []
 
 			petsByCity.forEach((pet)=>{
-				if(((!petFilters.age_min || pet.age >= petFilters.age_min) &&  (!petFilters.age_max || pet.age <= petFilters.age_max))&&(!petFilters.pet_type|| pet.pet_type === petFilters.pet_type) && (!petFilters.sex || pet.sex === petFilters.sex)&& (!petFilters.name || pet.name.includes(petFilters.name))&&(!petFilters.breed || (pet.breed!==null&& petFilters.breed.includes(pet.breed))) && (!petFilters.size || petFilters.size.includes(pet.size))) {
+				if(((!petFilters.age_min || pet.age >= petFilters.age_min) &&  (!petFilters.age_max || pet.age <= petFilters.age_max))&&(!petFilters.pet_type|| pet.pet_type === petFilters.pet_type) && (!petFilters.sex || pet.sex === petFilters.sex)&& (!petFilters.name || pet.name.includes(petFilters.name))&&(!petFilters.breed || (pet.breed!==null&& petFilters.breed.includes(pet.breed))) && (!petFilters.size || petFilters.size === pet.size || petFilters.size.includes(pet.size))) {
 					filtered.push(pet)
 				}
 
@@ -75,5 +76,9 @@ export class InMomoryPetsRepository implements PetsRepository{
 	async delete(pet: Pet): Promise<void> {
 		const petIndex = this.pets.findIndex((item)=> pet.id===item.id)
 		this.pets.splice(petIndex, 1)
+	}
+
+	async  getBreeds(): Promise<string[]> {
+		throw new Error('Method not implemented.')
 	}
 }

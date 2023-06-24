@@ -5,7 +5,28 @@ import { Filters } from '@/http/controllers/pets/search-pet.controller'
 import { SearchPetServiceResponse } from '@/services/search-pet.service'
 
 export class PrismaPetsRepository implements PetsRepository {
-	
+	async  getBreeds(): Promise<string[]> {
+		const breeds = await prisma.pet.findMany({
+			select: {
+				breed: true,
+			},
+			where: {
+				breed: {
+					not: null,
+				},
+			},
+			distinct: ['breed'],
+		})
+      
+		return breeds.reduce<string[]>((result, { breed }) => {
+			if (typeof breed === 'string') {
+				result.push(breed)
+			}
+			return result
+		}, [])
+	}
+      
+
 	async searchPets({
 		location,
 		page,
@@ -17,9 +38,8 @@ export class PrismaPetsRepository implements PetsRepository {
 		age_max,
 		...petFilters
 	}: Filters): Promise<SearchPetServiceResponse> {
-
 		// https://github.com/prisma/prisma/issues/7550
-		const count =await prisma.pet.findMany({
+		const count = await prisma.pet.findMany({
 			where: {
 				organisation: {
 					city: location,
@@ -27,24 +47,22 @@ export class PrismaPetsRepository implements PetsRepository {
 				size: {
 					in: size,
 				},
-				breed:{
+				breed: {
 					in: breed,
 				},
-				may_live_with:{
+				may_live_with: {
 					in: may_live_with,
 				},
-					
-				age:{
-					gte:age_min,
-					lte:age_max,
-	
+
+				age: {
+					gte: age_min,
+					lte: age_max,
 				},
 				...petFilters,
 			},
 		})
 
-
-		const pets =  await prisma.pet.findMany({
+		const pets = await prisma.pet.findMany({
 			where: {
 				organisation: {
 					city: location,
@@ -52,17 +70,16 @@ export class PrismaPetsRepository implements PetsRepository {
 				size: {
 					in: size,
 				},
-				breed:{
+				breed: {
 					in: breed,
 				},
-				may_live_with:{
+				may_live_with: {
 					in: may_live_with,
 				},
-				
-				age:{
-					gte:age_min,
-					lte:age_max,
 
+				age: {
+					gte: age_min,
+					lte: age_max,
 				},
 				...petFilters,
 			},
@@ -70,7 +87,7 @@ export class PrismaPetsRepository implements PetsRepository {
 			skip: (page - 1) * limit,
 		})
 
-		return {pets, count:count.length}
+		return { pets, count: count.length }
 	}
 	async findById(petId: string) {
 		const pet = await prisma.pet.findUnique({
@@ -90,7 +107,7 @@ export class PrismaPetsRepository implements PetsRepository {
 
 	async save(data: Pet): Promise<Pet> {
 		const pet = await prisma.pet.update({
-			where:{
+			where: {
 				id: data.id,
 			},
 			data,
@@ -101,8 +118,8 @@ export class PrismaPetsRepository implements PetsRepository {
 	async delete(pet: Pet): Promise<void> {
 		await prisma.pet.delete({
 			where: {
-				id: pet.id
-			}
+				id: pet.id,
+			},
 		})
 	}
 }

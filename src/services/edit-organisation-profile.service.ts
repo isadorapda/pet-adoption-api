@@ -45,8 +45,6 @@ export class EditOrganisationProfileService {
 			throw new EmailAlreadyRegisteredError()
 		}
 
-		console.log('banana')
-
 		const { orgId: id, ...parsedInput } = input
 
 		const updatedOrganisation = await this.organisationRepository.save({

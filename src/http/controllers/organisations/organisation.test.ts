@@ -50,7 +50,7 @@ describe('Organisation Controllers E2E', () => {
 		})
 	})
 
-	test.only('Should be able to refresh token when expired', async () => {
+	test('Should be able to refresh token when expired', async () => {
 		await request(app.server).post('/organisations').send({
 			name: 'Pet Org',
 			city: 'London',
@@ -65,7 +65,7 @@ describe('Organisation Controllers E2E', () => {
 			email: 'pet.adopt@email.com',
 			password: '123456',
 		})
-		console.log('cook', authResponse.headers)
+		console.info('cook', authResponse.headers)
 
 		const cookies = authResponse.get('Set-Cookie')
 
