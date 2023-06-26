@@ -21,6 +21,8 @@ const searchQuerySchema = z.object({
 	ideal_home: z.string().optional(),
 	page: z.coerce.number().min(1).default(1),
 	limit: z.coerce.number().min(1).default(20),
+	field: z.string().default('created_at'),
+	order: z.union([z.literal('asc'),z.literal('desc')]).default('desc'),
 })
 export async function searchPetController(
 	request: FastifyRequest,
