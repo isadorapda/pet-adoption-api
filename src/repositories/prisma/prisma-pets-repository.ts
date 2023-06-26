@@ -25,7 +25,6 @@ export class PrismaPetsRepository implements PetsRepository {
 			return result
 		}, [])
 	}
-      
 
 	async searchPets({
 		location,
@@ -35,59 +34,44 @@ export class PrismaPetsRepository implements PetsRepository {
 		breed,
 		may_live_with,
 		age_min,
-		age_max,
+		age_max,field, order,
 		...petFilters
 	}: Filters): Promise<SearchPetServiceResponse> {
 		// https://github.com/prisma/prisma/issues/7550
-		const count = await prisma.pet.findMany({
-			where: {
-				organisation: {
-					city: location,
-				},
-				size: {
-					in: size,
-				},
-				breed: {
-					in: breed,
-				},
-				may_live_with: {
-					in: may_live_with,
-				},
-
-				age: {
-					gte: age_min,
-					lte: age_max,
-				},
-				...petFilters,
+		const petWhereClause = {
+			organisation: {
+				city: location,
 			},
+			size: {
+				in: size,
+			},
+			breed: {
+				in: breed,
+			},
+			may_live_with: {
+				in: may_live_with,
+			},
+			age: {
+				gte: age_min,
+				lte: age_max,
+			},
+			...petFilters,
+		}
+    
+		const count = await prisma.pet.count({
+			where: petWhereClause,
 		})
-
+    
 		const pets = await prisma.pet.findMany({
-			where: {
-				organisation: {
-					city: location,
-				},
-				size: {
-					in: size,
-				},
-				breed: {
-					in: breed,
-				},
-				may_live_with: {
-					in: may_live_with,
-				},
-
-				age: {
-					gte: age_min,
-					lte: age_max,
-				},
-				...petFilters,
-			},
+			where: petWhereClause,
 			take: limit,
 			skip: (page - 1) * limit,
+			orderBy: {
+				[field]: order,
+			},
 		})
-
-		return { pets, count: count.length }
+    
+		return { pets, count }
 	}
 	async findById(petId: string) {
 		const pet = await prisma.pet.findUnique({

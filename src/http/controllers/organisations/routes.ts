@@ -5,18 +5,20 @@ import { refresgAuthenticateOrganisationController } from './refresh-auth.contro
 import { profileController } from './fetch-org-profile'
 import { verifyJWT } from '@/http/middlewares/verify-jwt'
 import { fetchOrgSortedPetsController } from './fetch-org-sorted-pets.controller'
-import {  tagPetAsAdoptedController } from './tag-adopted-pet.controller'
+import { tagPetAsAdoptedController } from './tag-adopted-pet.controller'
 import { editPetController } from './edit-pet.controller'
 import { deletePetController } from './delete-pet.controller'
 import { editOrganisationController } from './edit-organisation-profile.controller'
 import { deleteOrganisationController } from './delete-organisation.controller'
+import { fetchOrganisationController } from './fetch-organisation.controller'
 
-export async function organisationRoutes(app:FastifyInstance){
+export async function organisationRoutes(app: FastifyInstance) {
 	app.post('/organisations', registerOrganisationController)
-	app.get('/organisations/:orgId', fetchOrgSortedPetsController)
+	app.get('/organisations/pets/:orgId', fetchOrgSortedPetsController)
+	app.get('/organisation/:orgId', fetchOrganisationController)
 	app.post('/sessions', authenticateOrganisationController)
 	app.patch('/token/refresh', refresgAuthenticateOrganisationController)
-	app.get('/me', {onRequest:[verifyJWT]}, profileController)
+	app.get('/me', { onRequest: [verifyJWT] }, profileController)
 	app.patch('/me/pets/:petId', tagPetAsAdoptedController)
 	app.patch('/me/pets/:petId/edit', editPetController)
 	app.patch('/me/:orgId/edit', editOrganisationController)
