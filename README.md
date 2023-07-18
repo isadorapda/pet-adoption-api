@@ -1,28 +1,17 @@
-# App
+# Find a Pet API
 
-Find a pet
+This API was designed to connect pet-seeking individuals with responsible pet adoption organisations. It allows organisations to register and authenticate using JWT. Authenticated organisations can add pets for adoption to the platform, visualize their profile, manage their pets, and perform account-related operations. Pet seekers can search for pets using filters and view paginated results with the ability to sort and access detailed pet information, including the contact details of the respective organisation.
 
-# Functional Requirements
+The API follows the TDD approach, employs Factory and Repository design patterns, and includes both end-to-end and unit tests to ensure reliability and correctness.
 
-- [x] Should be able to register a new pet
-- [x] Should be able to get a list of pets to be adopted in a city
-- [x] Should be able to filter pets by its characteristics
-- [x] Should be able to access a pet details
-- [x] Should be able to register as an organisation
-- [x] Should be able to authenticate an organisation login
+## Database Schema:
+The API uses Prisma as the ORM to interact with the database.
 
-# Business Requirements
+## Technologies
 
-- [x] Each pet should be associated with an organisation
-- [x] Organisation must register city and mobile number
-- [x] City must be informed to be able to list pets for adoption
-- [x] Organisation should be authenticated to login as admin
-- [x] All filters should be optional except for city
-- [ ] User willing to adopt a pet should contact an organisation via WhatsApp
-
-# Non-functional Requirements
-
-- [x] Organisation's password must be encrypted
-- [x] Data must be persisted in a PostgreSQL database
-- [x] All datasets must be paginated with 20 items per page
-- [x] Organisation must be identified by a jwt
+- Node.js
+- TypeScript
+- Prisma
+- Fastify
+- Docker
+- Vitest
