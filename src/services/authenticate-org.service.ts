@@ -16,7 +16,7 @@ export class AuthenticateOrganisationService{
 
 	async authenticateOrgService({email,password}:AuthenticateOrganisationServiceRequest):Promise<AuthenticateOrganisationServiceResponse> {
 		const organisation = await this.organisationRepository.findByEmailValidation(email)
-
+		
 		if(!organisation){
 			throw new InvalidCredentialsError()
 		}

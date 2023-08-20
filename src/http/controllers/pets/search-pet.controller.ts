@@ -14,15 +14,20 @@ const searchQuerySchema = z.object({
 	age_max: z.coerce.number().optional(),
 	sex: z.enum(['MALE', 'FEMALE']).optional(),
 	size: z
-		.union([z.array(z.enum(['TINY','SMALL','MEDIUM','LARGE','GIANT'])), z.enum(['TINY','SMALL','MEDIUM','LARGE','GIANT'])])
+		.union([
+			z.array(z.enum(['TINY', 'SMALL', 'MEDIUM', 'LARGE', 'GIANT'])),
+			z.enum(['TINY', 'SMALL', 'MEDIUM', 'LARGE', 'GIANT']),
+		])
 		.optional(),
-	breed: z.union([z.array(z.string()),z.string()]).optional(),
-	may_live_with: z.union([z.array(z.nativeEnum(MayLiveWith)),z.nativeEnum(MayLiveWith)]).optional(),
+	breed: z.union([z.array(z.string()), z.string()]).optional(),
+	may_live_with: z
+		.union([z.array(z.nativeEnum(MayLiveWith)), z.nativeEnum(MayLiveWith)])
+		.optional(),
 	ideal_home: z.string().optional(),
 	page: z.coerce.number().min(1).default(1),
 	limit: z.coerce.number().min(1).default(20),
 	field: z.string().default('created_at'),
-	order: z.union([z.literal('asc'),z.literal('desc')]).default('desc'),
+	order: z.union([z.literal('asc'), z.literal('desc')]).default('desc'),
 })
 export async function searchPetController(
 	request: FastifyRequest,
