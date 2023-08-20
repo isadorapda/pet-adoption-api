@@ -17,6 +17,11 @@ jobs:
         run: yarn
       - name: Runs tests
         run: yarn test
+      - name: Run E2E tests
+        run: npm ci && npm run test:e2e
+        env:
+          JWT_SECRET: testing
+          DATABASE_URL: 'postgresql://docker:docker@localhost:5432/apipetadoption?schema=public'
       - name: Build
         run: yarn build
 
