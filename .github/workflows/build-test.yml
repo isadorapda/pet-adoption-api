@@ -4,9 +4,19 @@ on:
     branches: main
   pull_request:
     branches: main
+
 jobs:
   build-test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: bitnami/postgresql
+        ports:
+          - 5432:5432
+        env:
+          POSTGRESQL_USERNAME: docker
+          POSTGRESQL_PASSWORD: docker
+          POSTGRESQL_URL: apipetadoption
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -14,16 +24,16 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
-        run: yarn
+        run: npm ci
       - name: Runs tests
-        run: yarn test
+        run: npm run test
       - name: Run E2E tests
-        run: npm ci && npm run test:e2e
+        run: npm run test:e2e
         env:
           JWT_SECRET: testing
           DATABASE_URL: 'postgresql://docker:docker@localhost:5432/apipetadoption?schema=public'
       - name: Build
-        run: yarn build
+        run: npm run build
 
   automerge:
     name: Merge dependabot's PRs
