@@ -36,7 +36,7 @@ export class RegisterOrganisationService{
 			city,
 			address
 		})
-		console.log('ORG', organisation)
+
 		return {organisation}
 	}
 }
