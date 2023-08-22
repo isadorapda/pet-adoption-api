@@ -65,11 +65,8 @@ describe('Organisation Controllers E2E', () => {
 			email: 'pet.adopt@email.com',
 			password: '123456',
 		})
-		console.info('cook', authResponse.headers)
 
 		const cookies = authResponse.get('Set-Cookie')
-
-		console.log('SOIDHFIUSGFSDGFUO',cookies)
 
 		const response = await request(app.server).patch('/token/refresh').set('Cookie',cookies).send()
 
