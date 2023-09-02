@@ -1,29 +1,26 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {
-	OrganisationNoPassword,
-	OrganisationRepository,
-} from '@/repositories/organisation-repository'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+  OrganisationNoPassword,
+  OrganisationRepository,
+} from '@/repositories/organisation-repository';
+import {ResourceNotFoundError} from './errors/resource-not-found-error';
 
 interface FetchOrgServiceRequest {
-  orgId: string
- 
+  orgId: string;
 }
 interface FetchSortedOrgServiceResponse {
-  organisation: OrganisationNoPassword
+  organisation: OrganisationNoPassword;
 }
 
 export class FetchOrgService {
-	constructor(public organisationsRepository: OrganisationRepository) {}
-	async service({
-		orgId,
-	}: FetchOrgServiceRequest): Promise<FetchSortedOrgServiceResponse> {
-		const organisation = await this.organisationsRepository.findById(orgId)
+  constructor(public organisationsRepository: OrganisationRepository) {}
+  async service({orgId}: FetchOrgServiceRequest): Promise<FetchSortedOrgServiceResponse> {
+    const organisation = await this.organisationsRepository.findById(orgId);
 
-		if (!organisation) {
-			throw new ResourceNotFoundError()
-		}
+    if (!organisation) {
+      throw new ResourceNotFoundError();
+    }
 
-		return { organisation }
-	}
+    return {organisation};
+  }
 }

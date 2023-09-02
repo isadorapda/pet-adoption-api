@@ -1,4 +1,4 @@
-import { Organisation, Pet } from '@prisma/client'
+import {Organisation, Pet, Prisma} from '@prisma/client';
 
-export type EditOrganisationInput = Partial<Organisation> & Pick<Organisation, 'id'>
-export type EditPetInput = Partial<Pet> & Pick<Pet, 'id'>
+export type EditOrganisationInput = Partial<Organisation> & Pick<Organisation, 'id'>;
+export type EditPetInput = Prisma.PetUpdateInput & Pick<Pet, 'id'>;

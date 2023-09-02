@@ -1,11 +1,11 @@
-import { Organisation } from '@prisma/client'
+import {Organisation} from '@prisma/client';
 
 export function removePasswordHash(input: Organisation) {
-	const { password_hash: _password_hash, ...org } = input
+  const {password_hash: _password_hash, ...org} = input;
 
-	return org
+  return org;
 }
 
 export function removePasswordHashes(input: Array<Organisation>) {
-	return input.map(removePasswordHash)
+  return input.map(removePasswordHash);
 }
