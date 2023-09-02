@@ -11,7 +11,7 @@ env:
 
 jobs:
   build:
-    name: Deploy Fargate
+    name: Deploy EC2
     runs-on: ubuntu-latest
 
     steps:
@@ -45,6 +45,11 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
           aws ecs describe-task-definition --task-definition my-task-definition-family --query taskDefinition > task-definition.json
+
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition --task-definition ecs_task_definition \
+          --query taskDefinition > task-definition.json
 
       - name: Update task definition
         id: task-def
