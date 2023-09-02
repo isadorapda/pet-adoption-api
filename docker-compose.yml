@@ -1,5 +1,5 @@
 services:
-  api-pet-adoption-pg:
+  api-find-pet-pg:
     image: bitnami/postgresql
     ports:
       - 5432:5432
