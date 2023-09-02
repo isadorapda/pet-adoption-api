@@ -23,7 +23,7 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package*.json ./
-COPY .env ./
+COPY .env.production ./
 COPY tsconfig.json ./
 COPY prisma ./prisma/
 

@@ -2,9 +2,9 @@ import {config} from 'dotenv';
 import {z} from 'zod';
 
 if (process.env.NODE_ENV === 'production') {
-  config();
+  config({path: '.env.production'});
 } else {
-  config({path: '.env.development'});
+  config();
 }
 
 export const envSchema = z.object({
