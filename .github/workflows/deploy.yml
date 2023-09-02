@@ -5,7 +5,7 @@ on: workflow_dispatch
 env:
   AWS_REGION: eu-west-2
   ECR_REPOSITORY: find_a_pet_api_repository
-  ECS_SERVICE: ecs_servvice
+  ECS_SERVICE: ecs_service
   ECS_CLUSTER: ecs-cluster
   CONTAINER_NAME: find_a_pet_api
 
